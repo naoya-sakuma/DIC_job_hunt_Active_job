@@ -18,7 +18,7 @@ class BlogsController < ApplicationController
   def create
     @blog = Blog.new(blog_params)
       if @blog.save
-        @blog.title_change
+        TitlesChangeJob.perform_later(@blog.id)
         redirect_to blogs_path, notice: 'Blog was successfully created.'
       else
         format.html { render :new }
